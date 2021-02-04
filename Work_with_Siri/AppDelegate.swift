@@ -32,22 +32,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
     
-    func application(_ application: UIApplication, willContinueUserActivityWithType userActivityType: String) -> Bool {
-        
-        guard let intent = userActivity?.interaction?.intent as? INStartWorkoutIntent else {
-            print("AppDelegate: start workout intense - false")
-            return false
+//    func application(_ application: UIApplication, willContinueUserActivityWithType userActivityType: String) -> Bool {
+//
+//        guard let intent = userActivity?.interaction?.intent as? INStartWorkoutIntent else {
+//            print("AppDelegate: start workout intense - false")
+//            return false
+//        }
+//
+//        DataService.instance.startWorkoutIntent = intent
+//
+//        NotificationCenter.default.post(name: NSNotification.Name("workoutStartedNotification"), object: nil)
+//
+//        print("APPDelegate: Start Workout Intent - true")
+//        print(intent)
+//        return true
+//    }
+    
+    private func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+            guard let intent = userActivity.interaction?.intent as? INStartWorkoutIntent else {
+                print("AppDelegate: Start Workout Intent – FALSE")
+                return false
+            }
+            
+            DataService.instance.startWorkoutIntent = intent
+            
+            NotificationCenter.default.post(name: NSNotification.Name("workoutStartedNotification"), object: nil)
+                    
+            print("AppDelegate: Start Workout Intent – TRUE")
+            print(intent)
+            return true
         }
-        
-        DataService.instance.startWorkoutIntent = intent
-        NotificationCenter.default.post(name: NSNotification.Name("workoutStartNotification"), object: nil)
-        
-        print("APPDelegate: Start Workout Intent - true")
-        print(intent)
-        return true
-    }
-    
-    
     
 }
 
