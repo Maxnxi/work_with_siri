@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Intents
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -30,7 +31,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
-
-
+    
+    func application(_ application: UIApplication, willContinueUserActivityWithType userActivityType: String) -> Bool {
+        
+        guard let intent = userActivity?.interaction?.intent as? INStartWorkoutIntent else {
+            print("AppDelegate: start workout intense - false")
+            return false
+        }
+        
+        DataService.instance.startWorkoutIntent = intent
+        NotificationCenter.default.post(name: NSNotification.Name("workoutStartNotification"), object: nil)
+        
+        print("APPDelegate: Start Workout Intent - true")
+        print(intent)
+        return true
+    }
+    
+    
+    
 }
 
